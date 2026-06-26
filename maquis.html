@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maquis Le Coin Gourmand · Cotonou</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{--or:#c2820a;--or2:#f59e0b;--sombre:#111;--texte:#1a1a1a;--gris:#6b7280;--border:#e5e7eb;--bg:#fafaf8;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--texte);background:#fff;}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:100;background:rgba(17,17,17,.97);backdrop-filter:blur(10px);display:flex;justify-content:space-between;align-items:center;padding:1.1rem 3rem;}
+  .logo{display:flex;align-items:center;gap:.6rem;}
+  .logo-text{font-weight:900;font-size:1.15rem;color:#fff;letter-spacing:-.01em;}
+  .logo-text span{color:var(--or2);}
+  nav ul{list-style:none;display:flex;gap:2.5rem;}
+  nav a{text-decoration:none;color:#9ca3af;font-size:.88rem;font-weight:500;transition:color .2s;letter-spacing:.01em;}
+  nav a:hover{color:#fff;}
+  .nav-cta{background:var(--or);color:#fff!important;padding:.5rem 1.3rem;border-radius:8px;font-weight:700!important;}
+  .nav-cta:hover{background:#a36908!important;}
+
+  /* HERO */
+  .hero{min-height:100vh;background:#0d0d0d;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:0 3rem;gap:3rem;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-200px;right:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(245,158,11,.12) 0%,transparent 70%);pointer-events:none;}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--or2);font-size:.75rem;font-weight:700;padding:.4rem 1rem;border-radius:20px;margin-bottom:1.75rem;letter-spacing:.05em;}
+  .dot{width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+  .hero h1{font-size:clamp(2.5rem,4.5vw,4rem);font-weight:900;color:#fff;line-height:1.05;margin-bottom:1.5rem;letter-spacing:-.02em;}
+  .hero h1 em{color:var(--or2);font-style:normal;}
+  .hero-desc{color:#6b7280;font-size:1.05rem;line-height:1.8;margin-bottom:2.5rem;max-width:460px;}
+  .hero-btns{display:flex;gap:1rem;flex-wrap:wrap;}
+  .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.9rem;border-radius:10px;font-weight:700;font-size:.95rem;text-decoration:none;transition:all .2s;letter-spacing:.01em;}
+  .btn-or{background:var(--or);color:#fff;}
+  .btn-or:hover{background:#a36908;transform:translateY(-2px);}
+  .btn-ghost{background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.12);}
+  .btn-ghost:hover{background:rgba(255,255,255,.1);transform:translateY(-2px);}
+  .hero-right{display:flex;flex-direction:column;gap:1rem;}
+  .hero-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1rem;}
+  .hero-card-icon{font-size:2rem;width:52px;text-align:center;}
+  .hero-card h4{color:#fff;font-size:.95rem;font-weight:700;margin-bottom:.2rem;}
+  .hero-card p{color:#6b7280;font-size:.82rem;line-height:1.5;}
+  .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:.5rem;}
+  .hstat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:1rem;text-align:center;}
+  .hstat-num{font-size:1.6rem;font-weight:900;color:var(--or2);}
+  .hstat-label{font-size:.72rem;color:#6b7280;margin-top:.2rem;}
+
+  /* RIBBON */
+  .ribbon{background:var(--or);padding:1.1rem 3rem;}
+  .ribbon-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;text-align:center;}
+  .rib-item strong{display:block;color:#fff;font-size:.95rem;font-weight:700;}
+  .rib-item span{color:rgba(255,255,255,.75);font-size:.8rem;}
+
+  /* MENU */
+  .menu-section{padding:6rem 3rem;max-width:1200px;margin:0 auto;}
+  .label{font-size:.72rem;font-weight:700;color:var(--or);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.5rem;}
+  .title{font-size:2.2rem;font-weight:900;margin-bottom:.75rem;letter-spacing:-.02em;}
+  .subtitle{color:var(--gris);margin-bottom:3rem;font-size:1rem;line-height:1.6;}
+  .menu-tabs{display:flex;gap:.6rem;margin-bottom:2.5rem;flex-wrap:wrap;}
+  .tab{padding:.5rem 1.2rem;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s;color:var(--gris);}
+  .tab.active,.tab:hover{background:var(--sombre);color:#fff;border-color:var(--sombre);}
+  .menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;}
+  .mcard{background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:all .22s;cursor:pointer;}
+  .mcard:hover{box-shadow:0 12px 36px rgba(0,0,0,.1);transform:translateY(-4px);}
+  .mcard-top{height:140px;display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;}
+  .mcard-badge{position:absolute;top:12px;right:12px;background:var(--or);color:#fff;font-size:.7rem;font-weight:700;padding:.25rem .65rem;border-radius:6px;}
+  .mcard-body{padding:1.1rem 1.25rem 1.25rem;}
+  .mcard-body h3{font-weight:800;font-size:1rem;margin-bottom:.35rem;}
+  .mcard-body p{color:var(--gris);font-size:.83rem;line-height:1.55;margin-bottom:.9rem;}
+  .mcard-foot{display:flex;justify-content:space-between;align-items:center;}
+  .prix{font-weight:900;color:var(--sombre);font-size:1.1rem;}
+  .note{font-size:.78rem;color:#16a34a;font-weight:600;display:flex;align-items:center;gap:3px;}
+
+  /* AMBIANCE */
+  .ambiance{background:var(--bg);padding:6rem 3rem;}
+  .ambiance-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+  .ambiance-imgs{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .amb-img{border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:4rem;}
+  .amb-img.tall{grid-row:span 2;font-size:5rem;}
+  .amb-img.c1{background:#fef3c7;height:160px;}
+  .amb-img.c2{background:#dcfce7;height:160px;}
+  .amb-img.c3{background:#dbeafe;height:330px;}
+  .ambiance h2{font-size:2rem;font-weight:900;margin-bottom:1.25rem;letter-spacing:-.02em;}
+  .ambiance p{color:var(--gris);line-height:1.8;margin-bottom:1rem;font-size:.97rem;}
+  .points{margin-top:1.5rem;display:flex;flex-direction:column;gap:.75rem;}
+  .point{display:flex;align-items:flex-start;gap:.85rem;}
+  .point-icon{width:36px;height:36px;background:var(--or);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;margin-top:1px;}
+  .point-text strong{display:block;font-size:.9rem;font-weight:700;margin-bottom:.15rem;}
+  .point-text span{color:var(--gris);font-size:.83rem;}
+
+  /* TEMOIGNAGES */
+  .temoignages{padding:6rem 3rem;max-width:1200px;margin:0 auto;}
+  .temo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem;}
+  .temo{background:#fff;border:1px solid var(--border);border-radius:16px;padding:1.5rem;}
+  .stars{color:var(--or2);font-size:1rem;margin-bottom:.75rem;}
+  .temo p{color:#374151;font-size:.9rem;line-height:1.7;margin-bottom:1rem;font-style:italic;}
+  .temo-author{display:flex;align-items:center;gap:.75rem;}
+  .temo-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:#fff;}
+  .temo-author strong{font-size:.88rem;font-weight:700;display:block;}
+  .temo-author span{font-size:.78rem;color:var(--gris);}
+
+  /* CONTACT */
+  .contact-wrap{background:var(--sombre);}
+  .contact-inner{max-width:1200px;margin:0 auto;padding:6rem 3rem;display:grid;grid-template-columns:1fr 1.1fr;gap:5rem;align-items:start;}
+  .contact-left h2{font-size:2rem;font-weight:900;color:#fff;margin-bottom:1rem;letter-spacing:-.02em;}
+  .contact-left p{color:#6b7280;line-height:1.75;margin-bottom:2rem;font-size:.95rem;}
+  .cinfo{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.5rem;}
+  .cinfo-icon{width:44px;height:44px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+  .cinfo-text strong{display:block;color:#fff;font-size:.88rem;font-weight:700;margin-bottom:.2rem;}
+  .cinfo-text span{color:#6b7280;font-size:.83rem;line-height:1.5;}
+  .form-wrap{background:#fff;border-radius:20px;padding:2.25rem;}
+  .form-title{font-size:1.15rem;font-weight:800;margin-bottom:1.5rem;}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .field{margin-bottom:1rem;}
+  .field label{display:block;font-weight:700;font-size:.8rem;margin-bottom:.4rem;color:#374151;text-transform:uppercase;letter-spacing:.04em;}
+  .field input,.field textarea,.field select{width:100%;padding:.75rem 1rem;border:1.5px solid var(--border);border-radius:10px;font-size:.9rem;font-family:inherit;color:var(--texte);transition:border .2s;background:#fafafa;}
+  .field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--or);background:#fff;}
+  .field textarea{min-height:100px;resize:vertical;}
+  .submit{width:100%;padding:.9rem;background:var(--sombre);color:#fff;border:none;border-radius:10px;font-weight:800;font-size:.95rem;cursor:pointer;transition:all .2s;letter-spacing:.02em;}
+  .submit:hover{background:var(--or);}
+
+  /* FOOTER */
+  footer{background:#080808;padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+  .footer-logo{font-weight:900;color:#fff;font-size:1rem;}
+  .footer-logo span{color:var(--or2);}
+  footer p{color:#374151;font-size:.8rem;}
+  .credit{font-size:.8rem;color:#374151;}
+  .credit a{color:var(--or2);text-decoration:none;font-weight:600;}
+
+  @media(max-width:900px){
+    .hero{grid-template-columns:1fr;padding:5rem 1.5rem 3rem;min-height:auto;}
+    .hero-right{display:none;}
+    .ambiance-inner,.contact-inner{grid-template-columns:1fr;}
+    .ambiance-imgs{display:none;}
+    nav{padding:1rem 1.5rem;}
+    nav ul{gap:1.25rem;}
+    .menu-section,.temoignages{padding:4rem 1.5rem;}
+    .ambiance{padding:4rem 1.5rem;}
+    .contact-inner{padding:4rem 1.5rem;}
+    footer{padding:1.5rem;}
+    .ribbon{padding:1rem 1.5rem;}
+    .ribbon-inner{grid-template-columns:repeat(2,1fr);}
+    .frow{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <div class="logo-text">Le Coin <span>Gourmand</span></div>
+  </div>
+  <ul>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#ambiance">Ambiance</a></li>
+    <li><a href="#avis">Avis</a></li>
+    <li><a href="#contact" class="nav-cta">Réserver une table</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-badge"><span class="dot"></span> Ouvert aujourd'hui · 7h – 23h</div>
+    <h1>Le goût authentique<br>de la cuisine<br><em>béninoise</em></h1>
+    <p class="hero-desc">Au Coin Gourmand, chaque plat raconte une histoire. Des recettes transmises de génération en génération, cuisinées avec des ingrédients frais du marché de Dantokpa, servies avec le sourire.</p>
+    <div class="hero-btns">
+      <a href="#menu" class="btn btn-or">🍽️ Voir le menu</a>
+      <a href="#contact" class="btn btn-ghost">📞 Réserver</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-card">
+      <div class="hero-card-icon">🍲</div>
+      <div>
+        <h4>Plat du jour</h4>
+        <p>Pâte rouge au crabe frais de la lagune, servie avec légumes de saison</p>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-icon">🔥</div>
+      <div>
+        <h4>Spécialité maison</h4>
+        <p>Poisson braisé mariné 12h aux épices secrètes de la maison</p>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-num">14</div><div class="hstat-label">Années d'expérience</div></div>
+      <div class="hstat"><div class="hstat-num">200+</div><div class="hstat-label">Clients / semaine</div></div>
+      <div class="hstat"><div class="hstat-num">4.9★</div><div class="hstat-label">Note moyenne</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- RIBBON -->
+<div class="ribbon">
+  <div class="ribbon-inner">
+    <div class="rib-item"><strong>📍 Akpakpa, Cotonou</strong><span>Face au marché central</span></div>
+    <div class="rib-item"><strong>🕐 Lun–Sam 7h–23h</strong><span>Dimanche 8h–21h</span></div>
+    <div class="rib-item"><strong>📞 +229 01 23 45 67</strong><span>Réservation & commande</span></div>
+    <div class="rib-item"><strong>💰 500 – 3 500 FCFA</strong><span>Prix pour tous les budgets</span></div>
+  </div>
+</div>
+
+<!-- MENU -->
+<section class="menu-section" id="menu">
+  <div class="label">Notre carte</div>
+  <h2 class="title">Des saveurs qui vous transportent</h2>
+  <p class="subtitle">Tous nos plats sont préparés chaque matin avec des ingrédients frais achetés au marché de Dantokpa.</p>
+  <div class="menu-tabs">
+    <button class="tab active">Tous les plats</button>
+    <button class="tab">Plats de résistance</button>
+    <button class="tab">Grillades</button>
+    <button class="tab">Soupes & bouillons</button>
+    <button class="tab">Boissons</button>
+  </div>
+  <div class="menu-grid">
+    <div class="mcard">
+      <div class="mcard-top" style="background:#fef3c7;"><span>🍛</span><span class="mcard-badge">⭐ Best-seller</span></div>
+      <div class="mcard-body">
+        <h3>Pâte rouge au crabe</h3>
+        <p>Pâte de maïs moelleuse nappée d'une sauce tomate épicée avec crabe frais de la lagune de Cotonou.</p>
+        <div class="mcard-foot"><span class="prix">1 500 FCFA</span><span class="note">★★★★★ 98 avis</span></div>
+      </div>
+    </div>
+    <div class="mcard">
+      <div class="mcard-top" style="background:#dcfce7;"><span>🐟</span><span class="mcard-badge">🔥 Spécialité</span></div>
+      <div class="mcard-body">
+        <h3>Poisson braisé mariné</h3>
+        <p>Tilapia entier mariné 12h aux épices secrètes, grillé sur charbon de bois, servi avec attiéké et oignons.</p>
+        <div class="mcard-foot"><span class="prix">2 500 FCFA</span><span class="note">★★★★★ 145 avis</span></div>
+      </div>
+    </div>
+    <div class="mcard">
+      <div class="mcard-top" style="background:#ede9fe;"><span>🥘</span></div>
+      <div class="mcard-body">
+        <h3>Igname pilée & soupe</h3>
+        <p>Igname fraîche pilée à la main, accompagnée d'une soupe riche à la viande de mouton et légumes locaux.</p>
+        <div class="mcard-foot"><span class="prix">1 800 FCFA</span><span class="note">★★★★☆ 67 avis</span></div>
+      </div>
+    </div>
+    <div class="mcard">
+      <div class="mcard-top" style="background:#fee2e2;"><span>🍖</span></div>
+      <div class="mcard-body">
+        <h3>Brochettes de bœuf</h3>
+        <p>Viande de bœuf tendre marinée aux épices locales, grillée sur braises avec sauce piment maison.</p>
+        <div class="mcard-foot"><span class="prix">1 200 FCFA</span><span class="note">★★★★★ 82 avis</span></div>
+      </div>
+    </div>
+    <div class="mcard">
+      <div class="mcard-top" style="background:#fef3c7;"><span>🍚</span></div>
+      <div class="mcard-body">
+        <h3>Riz sauce graine</h3>
+        <p>Riz blanc parfumé avec sauce de noix de palme traditionnelle, viande de poulet et épices du terroir.</p>
+        <div class="mcard-foot"><span class="prix">1 200 FCFA</span><span class="note">★★★★★ 113 avis</span></div>
+      </div>
+    </div>
+    <div class="mcard">
+      <div class="mcard-top" style="background:#d1fae5;"><span>🥤</span><span class="mcard-badge">Maison</span></div>
+      <div class="mcard-body">
+        <h3>Jus de gingembre</h3>
+        <p>Gingembre frais pressé, citron vert, miel local et une pointe de menthe. Préparé chaque matin.</p>
+        <div class="mcard-foot"><span class="prix">500 FCFA</span><span class="note">★★★★★ 201 avis</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AMBIANCE -->
+<section class="ambiance" id="ambiance">
+  <div class="ambiance-inner">
+    <div class="ambiance-imgs">
+      <div class="amb-img c3 tall">🍽️</div>
+      <div class="amb-img c1">🌿</div>
+      <div class="amb-img c2">👨‍🍳</div>
+    </div>
+    <div>
+      <div class="label">Notre histoire</div>
+      <h2 class="title">Une table qui rassemble depuis 2010</h2>
+      <p>Tante Adjoua a ouvert Le Coin Gourmand avec une conviction simple : la bonne cuisine, c'est celle qui vous rappelle la maison. Depuis 14 ans, familles, étudiants et travailleurs reviennent pour nos plats faits maison.</p>
+      <p>Chaque matin, nous choisissons nos ingrédients au marché de Dantokpa. Aucun produit congelé, aucun raccourci — juste de la vraie cuisine béninoise préparée avec soin.</p>
+      <div class="points">
+        <div class="point">
+          <div class="point-icon">🌿</div>
+          <div class="point-text"><strong>Ingrédients 100% frais</strong><span>Achetés chaque matin au marché de Dantokpa, jamais de produits congelés.</span></div>
+        </div>
+        <div class="point">
+          <div class="point-icon">👨‍🍳</div>
+          <div class="point-text"><strong>Recettes traditionnelles</strong><span>Transmises de génération en génération, authentiques et non modifiées.</span></div>
+        </div>
+        <div class="point">
+          <div class="point-icon">❤️</div>
+          <div class="point-text"><strong>Ambiance familiale</strong><span>Un endroit où tout le monde se sent à l'aise, comme chez soi.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AVIS -->
+<section class="temoignages" id="avis">
+  <div class="label">Ce qu'ils disent</div>
+  <h2 class="title">Nos clients parlent pour nous</h2>
+  <div class="temo-grid">
+    <div class="temo">
+      <div class="stars">★★★★★</div>
+      <p>"Le meilleur poisson braisé de tout Cotonou, sans exagération. La marinade est incroyable et le service est toujours souriant. Je viens ici tous les vendredis depuis 3 ans."</p>
+      <div class="temo-author">
+        <div class="temo-avatar" style="background:#2563eb;">KA</div>
+        <div><strong>Koffi Agossou</strong><span>Client fidèle depuis 2021</span></div>
+      </div>
+    </div>
+    <div class="temo">
+      <div class="stars">★★★★★</div>
+      <p>"J'ai organisé mon anniversaire ici pour 30 personnes. Tante Adjoua a tout géré parfaitement. La pâte rouge était divine. Tout le monde m'a demandé l'adresse !"</p>
+      <div class="temo-author">
+        <div class="temo-avatar" style="background:#16a34a;">FS</div>
+        <div><strong>Fatou Sow</strong><span>Cliente depuis 2022</span></div>
+      </div>
+    </div>
+    <div class="temo">
+      <div class="stars">★★★★★</div>
+      <p>"Venu de Lomé pour le travail, c'est la première adresse qu'on m'a recommandée à Cotonou. Le jus de gingembre maison à lui seul vaut le déplacement. Je reviendrai !"</p>
+      <div class="temo-author">
+        <div class="temo-avatar" style="background:#dc2626;">AM</div>
+        <div><strong>Amavi Mensah</strong><span>Client de passage</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-wrap" id="contact">
+  <div class="contact-inner">
+    <div class="contact-left">
+      <div class="label" style="color:var(--or2)">Nous trouver</div>
+      <h2>Venez déguster ou réservez votre table</h2>
+      <p>Pour les groupes, événements et anniversaires, contactez-nous à l'avance. Nous nous adaptons à vos besoins.</p>
+      <div class="cinfo">
+        <div class="cinfo-icon">📍</div>
+        <div class="cinfo-text"><strong>Adresse</strong><span>Quartier Akpakpa, face au marché central<br>Cotonou, République du Bénin</span></div>
+      </div>
+      <div class="cinfo">
+        <div class="cinfo-icon">📞</div>
+        <div class="cinfo-text"><strong>Téléphone & WhatsApp</strong><span>+229 01 23 45 67</span></div>
+      </div>
+      <div class="cinfo">
+        <div class="cinfo-icon">🕐</div>
+        <div class="cinfo-text"><strong>Horaires d'ouverture</strong><span>Lundi – Samedi : 7h00 – 23h00<br>Dimanche : 8h00 – 21h00</span></div>
+      </div>
+      <div class="cinfo">
+        <div class="cinfo-icon">🎉</div>
+        <div class="cinfo-text"><strong>Événements & privatisation</strong><span>Disponible pour anniversaires, repas d'affaires et cérémonies familiales.</span></div>
+      </div>
+    </div>
+    <div class="form-wrap">
+      <h3 class="form-title">Réserver une table</h3>
+      <div class="frow">
+        <div class="field"><label>Prénom</label><input type="text" placeholder="Jean"></div>
+        <div class="field"><label>Nom</label><input type="text" placeholder="Koffi"></div>
+      </div>
+      <div class="field"><label>Téléphone / WhatsApp</label><input type="tel" placeholder="+229 XX XX XX XX"></div>
+      <div class="frow">
+        <div class="field"><label>Date</label><input type="date"></div>
+        <div class="field"><label>Heure</label><input type="time" value="12:00"></div>
+      </div>
+      <div class="field">
+        <label>Nombre de personnes</label>
+        <select>
+          <option>1 – 2 personnes</option>
+          <option>3 – 5 personnes</option>
+          <option>6 – 10 personnes</option>
+          <option>11 – 20 personnes</option>
+          <option>Plus de 20 (événement)</option>
+        </select>
+      </div>
+      <div class="field"><label>Message (optionnel)</label><textarea placeholder="Occasion spéciale, allergies, préférences..."></textarea></div>
+      <button class="submit">Confirmer la réservation</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Le Coin <span>Gourmand</span> · Cotonou</div>
+  <p style="color:#374151;">© 2026 · Tous droits réservés</p>
+  <div class="credit">Site créé par <a href="mailto:miguelrolt4@gmail.com">Miguel Rôlt</a> · Développeur Web Freelance</div>
+</footer>
+
+</body>
+</html>
